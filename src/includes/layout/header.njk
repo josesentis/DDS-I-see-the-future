@@ -1,0 +1,17 @@
+<header id="Header">
+    <nav>
+        <a class="link-arrow" href="/{{ localeUrl }}"><span>Home</span></a>
+        <a class="link-arrow" href="/{{ localeUrl }}blog"><span>Blog</span></a>
+        <a class="link-arrow" href="/{{ localeUrl }}cookie-policy"><span>Cookies</span></a>
+        <a class="link-arrow" href="/{{ localeUrl }}terms-and-conditions"><span>Terms</span></a>
+
+        {% for _lang in locales.langs %}
+            {% set activeClass = "is-active" if _lang.code == locale else "" %}
+            <a class="link-arrow {{ activeClass }}" href="{{ _lang.url }}" data-internal><span>{% lang locale, _lang.label %}</span></a>
+        {% endfor %}
+    </nav>
+</header>
+
+
+
+

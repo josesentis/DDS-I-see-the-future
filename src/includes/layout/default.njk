@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="{{ htmlClass }}" lang="{{ locale}}">
+    {# HEAD #}
+    {% include "layout/_head.njk" %}
+
+    {# BODY #}
+    {% if build.isDev %}{% set bodyClass = bodyClass + " __debug" %}{% endif %}
+
+    <body class="{{ bodyClass }}">
+        {# HEADER #}
+        {% include "layout/header.njk" %}
+
+        {# MAIN #}
+        <main id='Main'>
+            <div class='wrap'>
+                {{ content | safe }}
+            </div>
+        </main>
+
+        {# SCROLLBAR #}
+        {% include "layout/scrollbar.njk" %}
+
+        {# FOOTER #}
+        {% include "layout/footer.njk" %}
+
+        {# WINS #}
+        {% include "layout/windows.njk" %}
+
+        <script async defer src="/assets/preload.js"></script>
+    </body>
+</html>
