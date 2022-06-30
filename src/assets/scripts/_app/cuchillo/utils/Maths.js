@@ -3,8 +3,26 @@ const Maths = {
     return (val - min) / (max - min);
   },
 
-  lerp: function(s, e, t) {
-    return s * (1 - t) + e * t;
+  clamp: function (val, min, max) {
+    return Math.min(max, Math.max(min, val));
+  },
+
+  map: function (val, x1, y1, x2, y2) {
+    return ((val - x1) * (y2 - x2)) / (y1 - x1) + x2;
+  },
+
+  lerp: function (v1, v2, val) {
+    return v1 * (1 - val) + v2 * val;
+  },
+
+  smoothstep: function (min, max, val) {
+    if (val < min) return 0;
+    if (val > max) return 1;
+    return (val - min) / (max - min);
+  },
+
+  step: function (thrsh, val) {
+    return val < thrsh ? 0 : 1;
   },
 
   precission: function(val, dec = 3) {
@@ -12,7 +30,7 @@ const Maths = {
     return Math.round(val * dec) / dec;
   },
 
-   getRotationDegrees: function(obj) {
+  getRotationDegrees: function(obj) {
     var angle = 0;
     var matrix = obj.css("-webkit-transform") ||
       obj.css("-moz-transform")    ||
@@ -41,7 +59,6 @@ const Maths = {
     return (x.length == 1) ? '0' + x : x;
   },
 
-
   maxminRandom: function(__max, __min = 1) {
     return Math.floor(Math.random() * (__max - __min + 1)) + __min;
   },
@@ -62,7 +79,7 @@ const Maths = {
     return degrees * Math.PI / 180;
   },
 
-  toRegrees: function(radians) {
+  toDegrees: function(radians) {
     return radians * 180 / Math.PI;
   },
 

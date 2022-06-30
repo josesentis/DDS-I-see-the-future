@@ -21,12 +21,14 @@ const isFullUrl = (url) => {
 
 const manifestPath = path.resolve(__dirname, '../_site/assets/manifest.json');
 
+
 module.exports = {
   lang: async (locale, s) => {
-    const loc = locale ? locale : "es";
+    const loc = locale? locale : langs.default;
     const text = langs[loc][s];
-    return text ? text : "Translate missing";
+    return text? text : "Translate missing";
   },
+
   // Allow embedding markdown in `.njk` files
   // {% markdown %}
   // # Heading
@@ -46,19 +48,21 @@ module.exports = {
   icon: (name, className, size = iconDefaultSize) => {
     if (!Array.isArray(size)) size = [size];
     return outdent({ newline: '' })`
-    <svg class="icon icon--${name} ${className || ''
-      }" role="img" aria-hidden="true" width="${size[0]}" height="${size[1] || size[0]
-      }">
+    <svg class="icon icon--${name} ${
+      className || ''
+    }" role="img" aria-hidden="true" width="${size[0]}" height="${
+      size[1] || size[0]
+    }">
       <use xlink:href="/assets/images/sprite.svg#${name}"></use>
     </svg>`;
   },
 
   // Allow embedding svg icon
   // {% icon "github.svg", "my-class", [24, 24] %}
-  svg: (name, className, size = iconDefaultSize) => {
+  svg: (name, size = iconDefaultSize) => {
     if (!Array.isArray(size)) size = [size];
     return outdent({ newline: '' })`
-        <svg class="${className || ''}" role="img" aria-hidden="true" viewBox="0 0 ${size[0]} ${size[1] || size[0]}">
+        <svg role="img" aria-hidden="true" viewBox="0 0 ${size[0]} ${size[1] || size[0]}">
             <use xlink:href="/assets/images/sprite.svg#${name}"></use>
         </svg>`;
   },
@@ -70,7 +74,7 @@ module.exports = {
     const src = args[0];
 
     if (src) {
-      if (src.indexOf(site.url) > -1) {
+      if(src.indexOf(site.url) > -1) {
         return src;
       } else {
         const fullSrc = isFullUrl(src) ? src : `./src/assets/images/${src}`;
@@ -87,12 +91,20 @@ module.exports = {
     }
   },
 
-  img: (image) => {
-    const aspect = image.sizes["@1x-height"] / image.sizes["@1x-width"];
+  img: (image, opts={}) => {
+    /* Los svgs desde WP pueden llegar con altura 1, los ponemos con un aspect 1:1 */
+    const aspect = image.sizes["@1x-height"] <= 2 ? 1 : image.sizes["@1x-height"]/image.sizes["@1x-width"];
+    const atrImg = opts.attrImage? opts.attrImage : "";
+    const atrFig = opts.attrFigure? opts.attrFigure : "";
+    const loading = opts.loading? opts.loading : "lazy";
+    const loadType = opts.preload? "data-item-preload" : "data-item-load";
+    const figcaption = opts.figcaption? `<figcaption>${opts.figcaption}</figcaption>` : "";
+
     return outdent({ newline: '' })`
-        <figure class='media-holder' style="--aspect: ${aspect}">
-           <img data-item-load
-           loading="lazy"
+        <figure class='media-holder' ${atrFig} style="--aspect: ${aspect}">
+           <img ${loadType}
+           ${atrImg}
+           loading="${loading}"
            alt="${image.title}"
            src="/assets/images/blank.png"
            data-src="
@@ -102,12 +114,35 @@ module.exports = {
             ${image.sizes["@4x"]}"
            width="${image.sizes["@1x-width"]}"
            height="${image.sizes["@1x-height"]}">
+           ${figcaption}
         </figure>`;
   },
 
-  // Allow embedding responsive images
-  // {% image "image.jpeg", "Image alt", "Image title", "my-class" %}
-  // {% image [100,100], "image.jpeg", "Image alt", "Image title", "my-class" %}
+  video: (video, image, hasLoop = true) => {
+    const aspect = image.sizes["@1x-height"]/image.sizes["@1x-width"];
+    const loop = hasLoop? "loop" : "";
+    return outdent({ newline: '' })`
+        <figure class='media-holder' style="--aspect: ${aspect}">
+          <video data-autoplay
+            data-item-load
+            muted
+            ${loop}
+            playsinline
+            webkit-playsinline
+            preload="none"
+            poster="/assets/images/blank.png"
+            data-src="
+            ${image.sizes["@1x"]},
+            ${image.sizes["@2x"]},
+            ${image.sizes["@3x"]},
+            ${image.sizes["@4x"]}"
+            width="${image.sizes["@1x-width"]}"
+            height="${image.sizes["@1x-height"]}"
+            src="${video}"></video>
+        </figure>`;
+  },
+
+
   image: async (...args) => {
     let fallbackWidth, fallbackHeight;
 
@@ -144,13 +179,13 @@ module.exports = {
     const picture = outdent({ newline: '' })`
     <picture>
       ${Object.values(stats)
-        .map(
-          (image) =>
-            `<source type="image/${image[0].format}" srcset="${image
-              .map((entry) => `${entry.url} ${entry.width}w`)
-              .join(', ')}" sizes="${sizes}">`
-        )
-        .join('')}
+      .map(
+        (image) =>
+          `<source type="image/${image[0].format}" srcset="${image
+            .map((entry) => `${entry.url} ${entry.width}w`)
+            .join(', ')}" sizes="${sizes}">`
+      )
+      .join('')}
       <img
         class="${className ? `img-${className}` : ''}"
         loading="${lazy ? 'lazy' : 'eager'}"

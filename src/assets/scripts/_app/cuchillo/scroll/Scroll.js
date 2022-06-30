@@ -38,6 +38,7 @@ export const Scroll = {
     this.options = {
       container: options.container || document.body,
       element: options.element || window,
+      domResize: options.domResize,
       axis: __axis || "Y",
       smooth: options.smooth || false,
       easing: options.easing || 0.08,
@@ -86,6 +87,10 @@ export const Scroll = {
       }
     }
 
+    if(__item.getAttribute("data-class")) {
+      console.warn(`scroll-item [${__item.getAttribute("data-class")}] no existe, posiblemente no hayas hecho el import`);
+    }
+
     return __default || VScroll_Item;
   },
 
@@ -117,7 +122,9 @@ export const Scroll = {
   },
 
   setEnabled: function (__bol) {
-    if(this.engine.enabled !== __bol) this.engine.enabled = __bol;
+    if(this.engine) {
+      if(this.engine.enabled !== __bol) this.engine.enabled = __bol;
+    }
   },
 
   setSlidesMode(__bol) {
@@ -241,8 +248,8 @@ export const Scroll = {
     if(this.engine) this.engine.add(__item);
   },
 
-  addAll() {
-    if(this.engine) this.engine.addAll();
+  addAll(__selector) {
+    if(this.engine) this.engine.addAll(__selector);
   },
 
   addBullet(__id) {
@@ -275,13 +282,15 @@ export const Scroll = {
   },
 
   dispose() {
-    Scroll.engine.dispose();
-    Scroll.engine = null;
-    Scroll.y = -window.pageYOffset;
-    Scroll.x = -window.pageXOffset;
-    Scroll.axis = null;
-    Scroll.isScrolling = false;
-    Scroll.direction = 0;
-    Basics.velocidad = 0;
+    if(Scroll.engine) {
+      Scroll.engine.dispose();
+      Scroll.engine = null;
+      Scroll.y = -window.pageYOffset;
+      Scroll.x = -window.pageXOffset;
+      Scroll.axis = null;
+      Scroll.isScrolling = false;
+      Scroll.direction = 0;
+      Basics.velocidad = 0; 
+    }
   }
 };

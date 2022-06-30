@@ -109,11 +109,13 @@ export default class MrScroll {
   }
 
   _check() {
+    const tempY = this._element === window?  window.pageYOffset : this._element.scrollTop;
+
     Scroll.isScrolling = true;
-    Scroll.direction =  Scroll.y > -window.pageYOffset? 1 : -1;
+    Scroll.direction =  Scroll.y > -tempY? 1 : -1;
 
     this.position =
-      Scroll.y = -window.pageYOffset;
+      Scroll.y = -tempY;
   }
 
   _getClass(__item) {
@@ -124,6 +126,7 @@ export default class MrScroll {
       }
     }
   }
+  
 
   //
   // PUBLIC

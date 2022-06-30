@@ -2,6 +2,7 @@ import { GetBy, C } from '../core/Element';
 import { CSS } from '../utils/CSS';
 import { Scroll } from './Scroll';
 import { Maths } from '../utils/Maths';
+import { isTouch, isSmartphone } from '../core/Basics';
 
 export default class VScroll_Item {
   item;
@@ -30,6 +31,8 @@ export default class VScroll_Item {
   onHide = null;
   onMove = null; //position{x,y,z} size{width,height}
 
+  hasHiddenEnabled = true;
+  hasMove = true;
   isShow = false;
   isVisible = false;
   firstShow = true;
@@ -92,9 +95,10 @@ export default class VScroll_Item {
   update() {
     this.progress = this.progressItem;
 
-    if(this.isInViewport) {
+    if(this.isInViewport || !this.hasHiddenEnabled) {
       if(!this._needUpdate) {
-        this.item.style.visibility = "visible";
+        this.item.style.opacity = 1;
+        this.item.style.pointerEvents = "all";
         this._needUpdate = true;
       }
 
@@ -105,7 +109,10 @@ export default class VScroll_Item {
 
     } else if(this._needUpdate) {
       this._needUpdate = false;
-      this.item.style.visibility = "hidden";
+      if(this.hasHiddenEnabled) {
+        this.item.style.opacity = 0;
+        this.item.style.pointerEvents = "none";
+      }
       this.draw();
       this.setInsideY();
       this.hide();
@@ -134,8 +141,10 @@ export default class VScroll_Item {
       }
     }
 
-    if(!this._scroller.isNative) {
-      this.item.style[CSS.transform] = CSS.translate3D(x, y, z);
+    
+    if(!this._scroller.isNative && this.hasMove) {
+      //this.item.style[CSS.transform] = CSS.translate3D(x, y, z);
+      this.item.style[CSS.transform] = CSS.matrix3D(x, y, z);
     }
 
     this.item.style.setProperty('--y', `${this.realY}px`);
@@ -153,13 +162,12 @@ export default class VScroll_Item {
 
   setInsideY() {
     if(this._nInsiders > 0) {
-      let y = this.realY;
-
       for(let i = 0; i<this._nInsiders; i++) {
         this._insiders[i].loop({x:this.realX, y:this.realY, z:this.z}, this.progress, this.progressInside);
       }
     }
   }
+
   setInsidePosition() {
     this.setInsideY();
   }
@@ -216,7 +224,7 @@ export default class VScroll_Item {
     items = GetBy.selector("[data-scroll-video]", this.item);
     for (let i = 0, j = items.length; i < j; i++) {
       let id = items[i].getAttribute("data-scroller-id") || this._scroller.id;
-
+      
       if(id === this._scroller.id) {
         this._nVideos = this._videos.push(items[i])
       }
@@ -230,8 +238,10 @@ export default class VScroll_Item {
       if(!this._scroller.isNative || (this._scroller.isNative && InsiderClass.isNativeAllowed)) {
         C.forEach(GetBy.selector("[" + selector + "]", this.item), (e) => {
           const idScroll = e.getAttribute("data-scroller-id") || this._scroller.id;
+          const MOBILE_ENABLED = isTouch && e.getAttribute("data-avoid-mobile") === null || !isTouch;
+          const SMARTPHONE_ENABLED = isSmartphone && e.getAttribute("data-avoid-smartphone") === null || !isSmartphone;
 
-          if (idScroll === this._scroller.id) {
+          if (idScroll === this._scroller.id && MOBILE_ENABLED && SMARTPHONE_ENABLED) {
             this._nInsiders = this._insiders.push(new InsiderClass(e, this._axis))
           }
         })
@@ -309,6 +319,7 @@ export default class VScroll_Item {
   resize(__w,__h) {
     this.width = this.item.offsetWidth;
     this.height = this.item.offsetHeight;
+    this.opts.offset = window.innerHeight * .5;
 
     for(let i = 0; i<this._nInsiders; i++) {
       this._insiders[i].resize({width:this.width, height:this.height});
@@ -330,12 +341,13 @@ export default class VScroll_Item {
 
     /**/
     if(!this._scroller.isNative) {
-      this.item.style[CSS.transform] = CSS.translate3D(this._x, this._y, this._z);
+      this.item.style[CSS.transform] = CSS.matrix3D(this._x, this._y, this._z);
     }
     this.progress = this.progressItem;
 
     if(!this.isInViewport) {
-      this.item.style.visibility = "visible";
+      this.item.style.opacity = 1;
+      this.item.style.pointerEvents = "all";
     }
 
     this.setInsideY();
@@ -352,7 +364,3 @@ export default class VScroll_Item {
     this.item = null;
   }
 }
-
-
-
-

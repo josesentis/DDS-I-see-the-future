@@ -11,18 +11,3 @@
   --color-error: #ff0000;
   --color-sucess: #4dc247;
 }
-
-.palette-primary {
-    --primary: var(--black);
-    --secondary: var(--grey);
-}
-
-.palette-black {
-    --primary: var(--white);
-    --secondary: var(--black);
-}
-
-.palette-red {
-    --primary: var(--black);
-    --secondary: var(--color-error);
-}

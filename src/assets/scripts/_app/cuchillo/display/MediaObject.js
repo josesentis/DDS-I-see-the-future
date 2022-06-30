@@ -24,7 +24,7 @@ export default class MediaObject {
     }
 
     get size() {
-        let __size = Math.min(this.sizes.length, Math.floor((this.item.offsetWidth * Sizes.RATIO)/this.width * .85));
+        let __size = Math.min(this.sizes.length, Math.ceil((this.item.offsetWidth * Sizes.RATIO)/this.width));
         return __size > 1? __size-1 : 0;
     }
 

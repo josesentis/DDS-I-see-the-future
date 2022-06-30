@@ -116,7 +116,7 @@ export default class _Header {
   }
 
   static loop () {
-    if (Scroll.isScrolling && !this.isFixed) {
+    if (/*Scroll.isScrolling && */!this.isFixed) {
       const DELTA = Scroll.y - this.oldY;
       const POS_Y = Math.min(0, Math.max(-this.height, this.y + DELTA));
 
@@ -140,7 +140,7 @@ export default class _Header {
       }
 
       this.oldY = Scroll.y;
-    } else if (Scroll.isScrolling && this.isFixed) {
+    } else if (/*Scroll.isScrolling && */this.isFixed) {
       if (Scroll.y < -this.height && !this.hasBG) {
         this.showBG();
       } else if (Scroll.y > -this.height && this.hasBG) {

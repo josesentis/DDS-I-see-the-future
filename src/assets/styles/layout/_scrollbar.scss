@@ -1,5 +1,7 @@
+@use "sass:math";
+
 #Scrollbar {
-    --height: #{(80px / 16px) * 1rem};
+    --height: #{math.div(80px, 16px) * 1rem};
 
     position: fixed;
     @include z-index($z-index-scrollbar);
@@ -19,12 +21,12 @@
     }
 
     .track {
-        background-color: var(--secondary);
+        background-color: var(--primary-bg);
     }
 
     .thumb {
         transform-origin: 0 0;
-        background-color: var(--primary);
+        background-color: var(--primary-color);
         transform: scale(0,1);
     }
 

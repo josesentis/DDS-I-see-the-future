@@ -20,3 +20,7 @@
   overflow: hidden;
 }
 
+.__scroll-axis-x {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}

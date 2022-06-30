@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html class="{{ htmlClass }}" lang="{{ locale}}">
-    {# HEAD #}
-    {% include "layout/_head.njk" %}
+{% set lang = renderData.language if renderData.language else locales.default %}
+<html class="{{ htmlClass }}" lang="{{ lang }}">
+{# HEAD #}
+{% include "layout/_head.njk" %}
 
-    {# BODY #}
-    {% if build.isDev %}{% set bodyClass = bodyClass + " __debug" %}{% endif %}
+{# BODY #}
+{% if build.isDev %}{% set bodyClass = bodyClass|default('') + " __debug" %}{% endif %}
 
-    <body class="{{ bodyClass }}">
-        {# HEADER #}
-        {% include "layout/header.njk" %}
+<body class="{{ bodyClass }}">
+    {# HEADER #}
+    {% include "layout/header.njk" %}
 
-        {# MAIN #}
-        <main id='Main'>
-            <div class='wrap'>
-                {{ content | safe }}
-            </div>
-        </main>
+    {# MAIN #}
+    <main id='Main'>
+        <div class='wrap'>
+            {{ content | safe }}
 
-        {# SCROLLBAR #}
-        {% include "layout/scrollbar.njk" %}
+            {# FOOTER #}
+            {% include "layout/footer.njk" %}
+        </div>
+    </main>
 
-        {# FOOTER #}
-        {% include "layout/footer.njk" %}
+    {# SCROLLBAR #}
+    {% include "layout/scrollbar.njk" %}
 
-        {# WINS #}
-        {% include "layout/windows.njk" %}
+    {# WINS #}
+    {% include "layout/windows.njk" %}
 
-        <script async defer src="/assets/preload.js"></script>
-    </body>
+    <script async defer src="/assets/preload.js"></script>
+</body>
 </html>

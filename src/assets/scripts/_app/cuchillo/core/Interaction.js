@@ -1,5 +1,5 @@
 import { Metrics } from './Metrics';
-import { Basics } from './Basics';
+import { Basics, isTouch } from './Basics';
 import { ControllerPage } from '../pages/ControllerPage';
 import { ControllerWindow } from '../windows/ControllerWindow';
 import { GetBy, C } from './Element';
@@ -23,10 +23,10 @@ const Interaction = {
     this.setOptions(options);
     this._click();
 
-    if(this.options.drag) {
+    //if(this.options.drag) {
       this._down();
       this._up();
-    }
+    //}
     if(this.options.drag || this.options.ajax) {
       this._move();
     }
@@ -53,6 +53,7 @@ const Interaction = {
 
   _doDragMove(__lastMove = false) {
     let axis = Scroll.axis.toLowerCase();
+    
     this.positions.mouse.distance = this.positions.mouse[axis] - this.positions.old[axis];
 
     this.positions.mouse.speed = Math.min(this.options.maxDrag, Math.max(1, (Math.abs(this.positions.mouse.distance) * this.options.dragIntensity)));
@@ -67,8 +68,8 @@ const Interaction = {
   _move: function() {
     document.addEventListener(Basics.moveEvent, (e)=> {
       this.positions.mouse = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.touches[0].screenX : e.clientX,
+        y: isTouch? e.touches[0].screenY : e.clientY,
       };
 
       if(this.isDragging) {
@@ -97,6 +98,22 @@ const Interaction = {
         }
       }
 
+      if (this.positions.old.y < this.positions.mouse.y) {
+        document.body.classList.add('__mouse-down');
+        document.body.classList.remove('__mouse-up');
+      } else if (this.positions.old.y > this.positions.mouse.y) {
+        document.body.classList.remove('__mouse-down');
+        document.body.classList.add('__mouse-up');
+      }
+
+      if (this.positions.old.x < this.positions.mouse.x) {
+        document.body.classList.add('__mouse-right');
+        document.body.classList.remove('__mouse-left');
+      } else if (this.positions.old.x > this.positions.mouse.x) {
+        document.body.classList.remove('__mouse-right');
+        document.body.classList.add('__mouse-left');
+      }
+
       this.positions.old = this.positions.mouse;
     });
   },
@@ -104,13 +121,14 @@ const Interaction = {
   _down: function() {
     document.addEventListener(Basics.downEvent, (e) => {
       this.positions.click = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.touches[0].screenX : e.clientX,
+        y: isTouch? e.touches[0].screenY : e.clientY,
       };
 
       if(this.options.drag) {
         this._idTimer = setTimeout(() => {
-          this.isDragging = true;
+          this.positions.mouse = this.positions.old = this.positions.click;
+          this.isDragging = true;          
           if(this.options.onDragStart) this.options.onDragStart();
         }, this.options.dragCheckTime);
       }
@@ -126,8 +144,8 @@ const Interaction = {
       clearInterval(this._idTimer);
 
       this.positions.up = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.changedTouches[0].screenX : e.clientX,
+        y: isTouch? e.changedTouches[0].screenY : e.clientY,
       };
 
       if(this.isDragging) {
@@ -159,13 +177,18 @@ const Interaction = {
             if(e.target.getAttribute("data-ga-event")) {
               Analytics.sendEvent(e.target.getAttribute("data-ga-event"));
             }
-            //
+            //TEMP VALUE
             if(e.target.getAttribute("data-temp-value")) {
               Basics.tempValue = e.target.getAttribute("data-temp-value");
             }
             //TOGGLE SIDEMENU
             if(e.target.getAttribute("data-toggle-sidemenu") !== null) {
               Sidemenu.toogleState();
+            }
+
+            //TOGGLE WINDOW
+            if(e.target.getAttribute("data-toggle-window") !== null) {
+              ControllerWindow.toggle(e.target.getAttribute("data-toggle-window"), e.target);
             }
 
             //ANCHOR
@@ -177,8 +200,8 @@ const Interaction = {
             } else if(e.target.getAttribute("data-back") !== null) {
               e.preventDefault();
               ControllerPage.back(e.target.getAttribute("data-href") || e.target.getAttribute("href"));
-            } else if (this.options.ajax && e.target.getAttribute("data-link-project")) {
-              Basics.idProject = e.target.getAttribute("data-link-project");
+            } else if (this.options.ajax && e.target.getAttribute("data-temp-value")) {
+              Basics.tempValue = e.target.getAttribute("data-temp-value");
 
               e.preventDefault();
               ControllerPage.changePage(e.target.getAttribute("href"));
@@ -213,7 +236,10 @@ const Interaction = {
             if(e.target.getAttribute("data-ga-event")) {
               Analytics.sendEvent(e.target.getAttribute("data-ga-event"));
             }
-
+            //TEMP VALUE
+            if(e.target.getAttribute("data-temp-value")) {
+              Basics.tempValue = e.target.getAttribute("data-temp-value");
+            }
             if(e.target.getAttribute("data-toggle-sidemenu") !== null) {
               e.preventDefault();
               Sidemenu.toogleState();
@@ -277,9 +303,7 @@ class MrInteraction {
     };
   }
 
-  dispose() {
-
-  }
+  dispose() {}
 
   _doDragMove(__lastMove = false) {
     let axis = this.options.axis;
@@ -297,8 +321,8 @@ class MrInteraction {
   _move() {
     this.container.addEventListener(Basics.moveEvent, (e)=> {
       this.positions.mouse = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.touches[0].screenX : e.clientX,
+        y: isTouch? e.touches[0].screenY : e.clientY,
       };
 
       if(this.isDragging) {
@@ -327,12 +351,13 @@ class MrInteraction {
   _down() {
     this.container.addEventListener(Basics.downEvent, (e) => {
       this.positions.click = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.touches[0].screenX : e.clientX,
+        y: isTouch? e.touches[0].screenY : e.clientY,
       };
 
       if(this.options.drag) {
         this._idTimer = setTimeout(() => {
+          this.positions.mouse = this.positions.old = this.positions.click;
           this.isDragging = true;
           if(this.options.onDragStart) this.options.onDragStart();
         }, this.options.dragCheckTime);
@@ -349,8 +374,8 @@ class MrInteraction {
       clearInterval(this._idTimer);
 
       this.positions.up = {
-        x: e.clientX,
-        y: e.clientY,
+        x: isTouch? e.changedTouches[0].screenX : e.clientX,
+        y: isTouch? e.changedTouches[0].screenY : e.clientY,
       };
 
       if(this.isDragging) {

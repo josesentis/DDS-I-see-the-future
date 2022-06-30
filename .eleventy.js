@@ -34,6 +34,7 @@ module.exports = (config) => {
   });
 
   // Shortcodes
+
   config.addShortcode('icon', shortcodes.icon);
   config.addShortcode('svg', shortcodes.svg);
   config.addShortcode('img', shortcodes.img);
@@ -49,9 +50,9 @@ module.exports = (config) => {
   config.addPassthroughCopy('src/assets/fonts');
   config.addPassthroughCopy('src/assets/social');
   config.addPassthroughCopy('src/assets/images');
-  config.addPassthroughCopy({ 'src/assets/scripts/preload.js': 'assets/preload.js' });
-  config.addPassthroughCopy({ 'src/assets/scripts/service-worker.js': 'service-worker.js' });
-  config.addPassthroughCopy({ 'src/off/index.html': 'off/index.html' });
+  config.addPassthroughCopy({'src/assets/scripts/preload.js': 'assets/preload.js'});
+  config.addPassthroughCopy({'src/assets/scripts/service-worker.js': 'service-worker.js'});
+  config.addPassthroughCopy({'src/off/index.html': 'off/index.html'});
 
   // BrowserSync Overrides
   config.setBrowserSyncConfig({
@@ -63,7 +64,7 @@ module.exports = (config) => {
       ready: (err, browserSync) => {
         browserSync.addMiddleware('*', (req, res) => {
           const fourOFour = fs.readFileSync('_site/404.html');
-          res.writeHead(404, { "Content-Type": "text/html; charset=UTF-8" });
+          res.writeHead(404, {"Content-Type": "text/html; charset=UTF-8"});
           res.write(fourOFour);
           res.end();
         });

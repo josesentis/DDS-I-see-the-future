@@ -1,3 +1,4 @@
+@use "sass:math";
 
 // Cookies
 // -------------------------------
@@ -7,18 +8,18 @@
 
 .win-message,
 #Message {
-  --font-size:#{(24px / 16px) * 1rem};
-  --font-size-submit:#{(60px / 16px) * 1rem};
+  --font-size: #{math.div(24px, 16px) * 1rem};
+  --font-size-submit: #{math.div(60px, 16px) * 1rem};
 
   .palette-white &,
   .palette-secondary &,
   .palette-primary & {
     --bg-color: var(--black);
-    --color: var(--primary);
+    --color: var(--primary-color);
   }
 
   .palette-black & {
-    --bg-color: var(--primary);
+    --bg-color: var(--primary-color);
     --color: var(--black);
   }
 
@@ -91,7 +92,6 @@
     color: inherit;
   }
 }
-
 
 ///BOTON
 .win-message .btn-ok,

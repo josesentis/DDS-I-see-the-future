@@ -1,15 +1,19 @@
 <header id="Header">
-    <nav>
-        <a class="link-arrow" href="/{{ localeUrl }}"><span>Home</span></a>
-        <a class="link-arrow" href="/{{ localeUrl }}blog"><span>Blog</span></a>
-        <a class="link-arrow" href="/{{ localeUrl }}cookie-policy"><span>Cookies</span></a>
-        <a class="link-arrow" href="/{{ localeUrl }}terms-and-conditions"><span>Terms</span></a>
-
-        {% for _lang in locales.langs %}
-            {% set activeClass = "is-active" if _lang.code == locale else "" %}
-            <a class="link-arrow {{ activeClass }}" href="{{ _lang.url }}" data-internal><span>{% lang locale, _lang.label %}</span></a>
-        {% endfor %}
-    </nav>
+  <nav>
+  {% for item in menu[renderData.language] %}
+    {% if item.items.length == 0 %}
+      {# LINK BASICO #}
+      {% set activeLink = 'aria-current=page' if page.url === item.url else "" %}
+      <a class="link-arrow" href="{{ item.url }}" {{ activeLink }}><span>{{ item.title }}</span></a>
+    {%  else %}
+      {# LINK CON SUBLINKS #}
+      {% for subitem in item.items %}
+        {% set activeLink = 'aria-current=page' if page.url === subitem.url else "" %}
+        <a class="link-arrow" href="{{ subitem.url }}" {{ activeLink }}><span>{{ subitem.title }}</span></a>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  </nav>
 </header>
 
 

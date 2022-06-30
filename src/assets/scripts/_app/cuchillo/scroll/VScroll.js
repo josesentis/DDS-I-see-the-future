@@ -3,7 +3,7 @@ import { Maths } from '../utils/Maths';
 import { Functions } from '../utils/Functions';
 import VScroll_Item from './VScroll_Item';
 import { Scroll } from './Scroll';
-import { Basics } from '../core/Basics';
+import { Basics, isSmartphone, isTouch } from '../core/Basics';
 import { Keyboard } from '../core/Keyboard';
 
 export default class VScroll {
@@ -80,6 +80,8 @@ export default class VScroll {
   constructor(options = {}) {
     this.scroller = new virtualScroll();
 
+    // console.log(options.domResize)
+
     this._container = options.container;
     this.id = Functions.getId(this._container);
     this.width = this._container.offsetWidth;
@@ -94,7 +96,7 @@ export default class VScroll {
       itemClass: options.itemClass || VScroll_Item,
       wheel: options.wheel === undefined? true : options.wheel,
       isMain: options.isMain || true,
-      hasLimits: options.hasLimits !== false,
+      hasLimits: options.hasLimits !== false
     };
 
     this._call = (e) => {
@@ -122,15 +124,17 @@ export default class VScroll {
         break;
     }
 
-    this._setupResize();
+    this._setupResize(options.domResize || options.container);
   }
 
-  _setupResize() {
+  _setupResize(__dom) {
     this.resizeObserver = new ResizeObserver(entries => {
       this.resize();
-      this.loop(true);
     });
-    this.resizeObserver.observe(this._container);
+
+    // console.log(__dom)
+
+    this.resizeObserver.observe(__dom);
   }
 
   _initKeyboard() {
@@ -204,8 +208,10 @@ export default class VScroll {
 
     for (let i = 0, j = _items.length; i<j; i++) {
       _items[i].removeAttribute("scroll-item");
-      const MOBILE_ENABLED = Basics.isTouch && _items[i].getAttribute("data-avoid-mobile") === null || !Basics.isTouch;
-      if(MOBILE_ENABLED) {
+      const MOBILE_ENABLED = isTouch && _items[i].getAttribute("data-avoid-mobile") === null || !isTouch;
+      const SMARTPHONE_ENABLED = isSmartphone && _items[i].getAttribute("data-avoid-smartphone") === null || !isSmartphone;
+
+      if(MOBILE_ENABLED && SMARTPHONE_ENABLED) {
         let _class = Scroll._classItems.length > 0 ? Scroll._getClass(_items[i], this.options.itemClass) : this.options.itemClass;
         let _item = new _class(_items[i], this.total_items, this);
         this.total_items = this._items.push(_item);

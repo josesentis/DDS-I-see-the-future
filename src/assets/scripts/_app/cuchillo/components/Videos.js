@@ -66,6 +66,7 @@ export const Videos = {
     const container = item.parentNode.parentNode;
     const btn = GetBy.class("__pause", container)[0];
     const timeLabel = GetBy.class("__time", container)[0];
+    const loopStartTime = item.getAttribute("data-loop-start");
 
     if(btn) {
       /* PLAY PAUSE */
@@ -98,6 +99,15 @@ export const Videos = {
           gsap.ticker.remove(this._calls.loop);
         })
       }
+    }
+
+    /* LOOP TIME */
+    if(loopStartTime) {
+      item.removeAttribute("loop");
+      item.addEventListener('ended', (event) => {
+        item.currentTime = loopStartTime;
+        item.play();
+      });
     }
   },
 

@@ -16,6 +16,9 @@
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="robots" content="{{ robots }}" />
 
+  {# Canonical #}
+  <link rel="canonical" href="{{ url }}" />
+
   {# Open graph related #}
   <meta property="og:title" content="{{ title }}" />
   <meta property="og:type" content="{{ type }}" />
@@ -26,7 +29,7 @@
 
   {# Twitter #}
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{ type }}" />
+  <meta property="twitter:url" content="{{ url }}" />
   <meta property="twitter:title" content="{{ title }}" />
   <meta property="twitter:description" content="{{ description }}" />
   <meta property="twitter:image" content="{% social image_twitter %}" />
@@ -45,16 +48,20 @@
 
   {# ANALITYCS #}
   {% if google_analytics_code %}
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async data-src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_code }}" data-cookiecategory="analytics"></script>
-      <script type="text/plain" data-cookiecategory="analytics" data-code="{{ google_analytics_code }}">
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '{{ google_analytics_code }}');
-      </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async data-src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_code }}" data-cookiecategory="analytics"></script>
+    <script type="text/plain" data-cookiecategory="analytics" data-code="{{ google_analytics_code }}">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ google_analytics_code }}');
+    </script>
   {% endif %}
 
   {# MINCSS #}
   {% include "layout/_inline-css.njk" %}
+
+    {# MINJS #}
+  {% include "layout/_inline-js.njk" %}
 </head>

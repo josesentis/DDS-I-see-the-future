@@ -95,11 +95,11 @@ export default class Scrollbar  {
     if(this.axis === "Y") {
       this.size = this.track.offsetHeight;
       this.sizeThumb = this.thumb.offsetHeight;
-      this.offset = this.container.offsetTop;
+      this.offset = this.container.getBoundingClientRect().top;
     } else {
       this.size = this.track.offsetWidth;
       this.sizeThumb = this.thumb.offsetWidth;
-      this.offset = this.container.offsetLeft;
+      this.offset = this.container.getBoundingClientRect().left;
     }
 
     this.p0 = 0;

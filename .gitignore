@@ -21,3 +21,6 @@ yarn-error.log*
 .idea
 
 _material/
+
+# CMS cache
+src/_datacache

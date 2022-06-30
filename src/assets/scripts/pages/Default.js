@@ -6,6 +6,7 @@ import Wrap from '../layout/Wrap';
 import { isMobile } from '../_app/cuchillo/core/Basics';
 import { Videos } from '../_app/cuchillo/components/Videos';
 import { Acordions } from '../_app/cuchillo/components/Acordions';
+import Forms from '../_app/cuchillo/forms/FormValidator';
 
 export default class Default extends Page {
 
@@ -14,11 +15,12 @@ export default class Default extends Page {
 
     Videos.init();
     Acordions.init();
+    Forms.init();
   }
 
   //SHOW
   beforeShow() {
-    Scroll.init(Scroll.AXIS_Y, {smooth:!isMobile, multiplicator:1});
+    Scroll.init(Scroll.AXIS_Y, {domResize:this.container, smooth:!isMobile, multiplicator:1});
     Scroll.setScrollbar(new Scrollbar());
     Scroll.start();
   }
@@ -46,6 +48,7 @@ export default class Default extends Page {
   //RESIZE
   resize() {
     super.resize();
+    Acordions.resize();
   }
 
   //LOOP

@@ -5,6 +5,7 @@ import { ControllerPage } from './ControllerPage';
 import EventDispatcher from '../core/EventDispatcher';
 import BG from '../layout/Background';
 import { ControllerWindow } from '../windows/ControllerWindow';
+import _Wrap from '../layout/Wrap';
 
 export default class Page {
   static ON_ACTIVATE = "page_activate";
@@ -22,6 +23,8 @@ export default class Page {
 
   _isHide = false;
   _isActive = false;
+
+  _bodyClass;
 
   id;
   wrap;
@@ -41,6 +44,8 @@ export default class Page {
     this.container = GetBy.selector('[data-page]')[0];
     this.color = this.container.getAttribute("data-palette");
     this.container.removeAttribute("data-page");
+    this._bodyClass = this.container.getAttribute("data-body-class");
+    if(this._bodyClass) document.body.classList.add(this._bodyClass);
 
     this._setupColor();
     this._setupComponents();
@@ -113,7 +118,7 @@ export default class Page {
     this.beforeHide();
 
     this.beforeHide__effect(()=> {
-
+      if(this._bodyClass) document.body.classList.remove(this._bodyClass);
 
       /*if(Preloader.enabled) {
         Preloader.show(() => { this.hide__effect(); });
@@ -138,6 +143,7 @@ export default class Page {
   //SHOW
   beforeShow() {}
   show__effect() {
+    _Wrap.show();
     this.container.style.opacity = 1;
     this.afterShow();
   }

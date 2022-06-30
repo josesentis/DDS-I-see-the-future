@@ -14,6 +14,10 @@ const CSS = {
     return result;
   },
 
+  matrix3D: function(x = 0, y = 0, z = 0) {
+    return `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ${x}, ${y}, ${z}, 1)`;
+  },
+
   translate3D: function(x = 0, y = 0, z = 0) {
     return "translate3d(" + x + "px, " + y + "px, " + z + "px)";
   },
