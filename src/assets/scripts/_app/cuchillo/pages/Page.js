@@ -29,7 +29,7 @@ export default class Page {
   id;
   wrap;
   container;
-  color;
+  // color;
   isFirstTime = false;
   isWrapAutoRemove = true;
 
@@ -42,12 +42,12 @@ export default class Page {
 
     this.wrap = GetBy.class("wrap")[0];
     this.container = GetBy.selector('[data-page]')[0];
-    this.color = this.container.getAttribute("data-palette");
+    // this.color = this.container.getAttribute("data-palette");
     this.container.removeAttribute("data-page");
     this._bodyClass = this.container.getAttribute("data-body-class");
     if(this._bodyClass) document.body.classList.add(this._bodyClass);
 
-    this._setupColor();
+    // this._setupColor();
     this._setupComponents();
   }
 
@@ -55,11 +55,11 @@ export default class Page {
 //          PRIVATE
 //==================================================================================================================
 
-  _setupColor() {
-    if(ControllerPage.firsTime) {
-      BG.changePaletteDirect(this.color);
-    }
-  }
+  // _setupColor() {
+    // if(ControllerPage.firsTime) {
+    //   BG.changePaletteDirect(this.color);
+    // }
+  // }
 
   _setupComponents() {
     ControllerWindow.init();
@@ -103,9 +103,11 @@ export default class Page {
 
   _show() {
     EventDispatcher.dispatchEvent(Page.ON_SHOW);
-    requestAnimationFrame(() => {
-      BG.changePalette(this.color, ()=> { this.show__effect() });
-    });
+    
+    this.show__effect();
+    // requestAnimationFrame(() => {
+    //   BG.changePalette(this.color, ()=> { this.show__effect() });
+    // });
   }
 
   _hide() {
