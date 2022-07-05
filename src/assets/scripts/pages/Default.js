@@ -1,13 +1,10 @@
 import { Scroll } from '../_app/cuchillo/scroll/Scroll';
-// import Scrollbar from '../_app/cuchillo/scroll/Scrollbar';
 import Page from '../_app/cuchillo/pages/Page';
 import { ControllerPage } from '../_app/cuchillo/pages/ControllerPage';
 import Wrap from '../layout/Wrap';
 import { isMobile } from '../_app/cuchillo/core/Basics';
 import { GetBy } from '../_app/cuchillo/core/Element';
-// import { Videos } from '../_app/cuchillo/components/Videos';
-// import { Acordions } from '../_app/cuchillo/components/Acordions';
-import Forms, { FormValidator } from '../_app/cuchillo/forms/FormValidator';
+import { FormValidator } from '../_app/cuchillo/forms/FormValidator';
 
 export default class Default extends Page {
   _form;
@@ -16,12 +13,7 @@ export default class Default extends Page {
   constructor() {
     super();
 
-    // Videos.init();
-    // Acordions.init();
-    // Forms.init();
-
     this._onSubmit = () => {
-      // e.preventDefault();
       this.onSubmit();
     };
 
@@ -33,7 +25,6 @@ export default class Default extends Page {
   //SHOW
   beforeShow() {
     Scroll.init(Scroll.AXIS_Y, {domResize:this.container, smooth:!isMobile, multiplicator:1});
-    // Scroll.setScrollbar(new Scrollbar());
     Scroll.start();
   }
 
@@ -60,7 +51,6 @@ export default class Default extends Page {
   //RESIZE
   resize() {
     super.resize();
-    // Acordions.resize();
   }
 
   //LOOP
