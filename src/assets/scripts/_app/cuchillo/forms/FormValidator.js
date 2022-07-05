@@ -137,7 +137,7 @@ export class FormValidator {
 
     if (this.check()) {
       // this.parseToSend();
-      this.callback();
+      this.callback(this._dataSend);
     }
   }
 

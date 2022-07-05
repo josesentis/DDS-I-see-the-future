@@ -13,8 +13,8 @@ export default class Default extends Page {
   constructor() {
     super();
 
-    this._onSubmit = () => {
-      this.onSubmit();
+    this._onSubmit = (data) => {
+      this.onSubmit(data);
     };
 
     this._characterPrinter = GetBy.id('char-printer');
@@ -60,8 +60,8 @@ export default class Default extends Page {
     }
   }
 
-  onSubmit () {
-    console.log('Submit', this._characterPrinter);
+  onSubmit (data) {
+    console.log('Submit', data);
   }
 }
 
