@@ -81,10 +81,12 @@ export default class Default extends Page {
   }
 
   onSubmit (data) {
+    console.log(data);
+
     Object.keys(data).map((q, i) => {
       this._characters.map(char => {
         char.val += characters[char.name][i][data[q]];
-      })
+      });
     });
 
     this._characters.sort((a, b) => {
@@ -94,6 +96,8 @@ export default class Default extends Page {
     console.log(this._characters);
 
     this._characterPrinter.innerHTML = this._characters[0].name;
+
+    this._characters.map(char => { char.val = 0; });
   }
 }
 
