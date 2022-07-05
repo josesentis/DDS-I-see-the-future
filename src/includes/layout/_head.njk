@@ -47,7 +47,7 @@
   {% include "layout/_fonts.njk" %}
 
   {# ANALITYCS #}
-  {% if google_analytics_code %}
+  {# {% if google_analytics_code %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async data-src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_code }}" data-cookiecategory="analytics"></script>
     <script type="text/plain" data-cookiecategory="analytics" data-code="{{ google_analytics_code }}">
@@ -57,7 +57,7 @@
 
         gtag('config', '{{ google_analytics_code }}');
     </script>
-  {% endif %}
+  {% endif %} #}
 
   {# MINCSS #}
   {% include "layout/_inline-css.njk" %}

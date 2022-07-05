@@ -7,6 +7,7 @@
     font-size: var(--font-size);
     margin-left: auto;
     margin-right: auto;
+    margin-top: var(--padding-m);
     max-width: rem(900);
 
     // input,
@@ -55,7 +56,7 @@
     fieldset {
         // border-bottom: 1px solid var(--white);
         // height: calc(rem(12) + var(--input-height));
-        margin-bottom: var(--padding-s);
+        margin-bottom: var(--padding-m);
         padding: rem(6) 0;
         position: relative;
 
@@ -89,7 +90,7 @@
         //     &.--success label {
         //         border-color: var(--color-success);
         //     }
-            
+
         //     &.--error label {
         //         border-color: var(--color-error);
         //     }
@@ -105,7 +106,7 @@
 
         // &.--file {
         //     border: 0;
-            
+
         //     label {
         //         border-bottom: 1px solid var(--white);
         //     }
@@ -117,7 +118,7 @@
             // &.--success label {
             //     border-color: var(--color-success);
             // }
-            
+
             // &.--error label {
             //     border-color: var(--color-error);
             // }

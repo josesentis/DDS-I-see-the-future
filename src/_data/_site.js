@@ -2,9 +2,9 @@ const timestamp = new Date();
 
 module.exports = {
   lang: "es",
-  name: "WDC Valencia 2022",
-  title: "WDC Valencia 2022",
-  description: "Wordpress + 11ty + Cuchillo Core",
+  name: "I SEE THE FUTURE",
+  title: "I SEE THE FUTURE",
+  description: "I SEE THE FUTURE",
   type: "website",
   image: "/assets/social/facebook-1200x630.jpg",
   image_twitter: "/assets/social/twitter-600x330.jpg",

@@ -1,6 +1,5 @@
 <Footer id="Footer" scroll-item>
-    <nav>
-        {# RRSS #}
+    {# <nav>
         {% if contact[renderData.language].rrss %}
             <div>
                 {% for item in contact[renderData.language].rrss %}
@@ -9,7 +8,6 @@
             </div>
         {% endif %}
 
-        {# CONTACT INFO #}
         {% if contact[renderData.language].contact %}
             <div>
                 {% for item in contact[renderData.language].contact %}
@@ -18,7 +16,6 @@
             </div>
         {% endif %}
 
-        {# LEGALES #}
         {% if all[renderData.language].legales %}
             <div>
                 {% for item in all[renderData.language].legales %}
@@ -28,7 +25,6 @@
             </div>
         {% endif %}
 
-        {# LANGS #}
         {% if locales.langs %}
             <div>
                 {% for lang in locales.langs %}
@@ -37,5 +33,5 @@
                 {% endfor %}
             </div>
         {% endif %}
-    </nav>
+    </nav> #}
 </Footer>

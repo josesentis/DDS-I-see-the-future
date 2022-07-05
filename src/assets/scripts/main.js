@@ -66,7 +66,7 @@ export default class Main {
     // LoaderController.update = progress => {  };
     LoaderController.init();
 
-    this.doCuchilloInfo();
+    // this.doCuchilloInfo();
     this.setWorker();
 
     // LOOP
