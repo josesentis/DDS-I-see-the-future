@@ -136,19 +136,20 @@ export class FormValidator {
     e.preventDefault();
 
     if (this.check()) {
-      this.parseToSend();
+      // this.parseToSend();
+      this.callback();
     }
   }
 
-  parseToSend() {
-    this._dataSend['token'] = this._form.getAttribute('data-token');
+  // parseToSend() {
+  //   this._dataSend['token'] = this._form.getAttribute('data-token');
 
-    if (this._form.getAttribute('data-to') !== undefined) {
-      this._dataSend['to'] = this._form.getAttribute('data-to');
-    }
+  //   if (this._form.getAttribute('data-to') !== undefined) {
+  //     this._dataSend['to'] = this._form.getAttribute('data-to');
+  //   }
 
-    FormSender.send(this, this._dataSend, this._form, this._files);
-  }
+  //   FormSender.send(this, this._dataSend, this._form, this._files);
+  // }
 
   reset() {
     this._dataSend = {};

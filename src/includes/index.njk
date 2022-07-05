@@ -1,17 +1,17 @@
-<article data-page="default" data-palette="primary">
-    HOME PAGE
-
-    <form class="form" scroll-item>
-    {% for q in questions %}
-        <fieldset>        
-            <p for="question-{{ loop.index }}-a">
-                {{ q.question }}
-            </p>
-            <input type="radio" id="question-{{ loop.index }}-a" name="question-{{ loop.index }}" value="a">
-            <label for="question-{{ loop.index }}-a">{{ q.a }}</label>
-            <input type="radio" id="question-{{ loop.index }}-b" name="question-{{ loop.index }}" value="b">
-            <label for="question-{{ loop.index }}-b">{{ q.b }}</label>
-        </fieldset>        
-    {% endfor %}
+<article data-page="default">
+    <form id="form" class="form" scroll-item>
+        {% for q in questions %}
+            <fieldset>        
+                <p for="question-{{ loop.index }}-a">
+                    {{ q.question }}
+                </p>
+                <input type="radio" id="question-{{ loop.index }}-a" name="question-{{ loop.index }}" value="a">
+                <label for="question-{{ loop.index }}-a">{{ q.a }}</label>
+                <input type="radio" id="question-{{ loop.index }}-b" name="question-{{ loop.index }}" value="b">
+                <label for="question-{{ loop.index }}-b">{{ q.b }}</label>
+            </fieldset>        
+        {% endfor %}
+        <input type="submit" value="Submit" />
     </form>
+    <div id="char-printer"></div>
 </article>
