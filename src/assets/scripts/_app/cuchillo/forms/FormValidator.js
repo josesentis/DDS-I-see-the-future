@@ -40,9 +40,10 @@ export class FormValidator {
     };
 
     const items = [
-      ...GetBy.selector('input', this._form),
-      ...GetBy.selector('select', this._form),
-      ...GetBy.selector('textarea', this._form)
+      ...GetBy.class('input', this._form),
+      ...GetBy.class('select', this._form),
+      ...GetBy.class('textarea', this._form),
+      ...GetBy.class('radio', this._form)
     ];
     C.forEach(items, (e) => {
       this._fields.push(e);
@@ -91,8 +92,13 @@ export class FormValidator {
       valid = false;
     }
 
-    if (__input.dataset.formRadio !== undefined && !__input.checked) {
-      valid = false;
+    if (__input.dataset.formRadio !== undefined) {
+      const inputs = GetBy.selector('input', __input);
+      let checked = false;
+
+      for (let i = 0; i < inputs.length; i++) if (inputs[i].checked) checked = true;
+
+      valid = checked;
     }
 
     if (__input.dataset.formFile !== undefined) {
@@ -123,6 +129,13 @@ export class FormValidator {
             name: item.getAttribute('name'),
             value: item.files[0]
           });
+        } else if (item.dataset.formRadio !== undefined) {
+            const inputs = GetBy.selector('input', item);
+            for (let i = 0; i < inputs.length; i++) {
+              if (inputs[i].checked) {
+                this._dataSend[inputs[i].getAttribute('name')] = inputs[i].value;
+              }
+            }
         } else {
           this._dataSend[item.getAttribute('name')] = item.value;
         }

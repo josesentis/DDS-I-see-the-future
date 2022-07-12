@@ -32,7 +32,7 @@ import Wrap from './layout/Wrap';
 import InterfaceCanvas from './_app/cuchillo/layout/InterfaceCanvas';
 import Loading from './layout/Loading';
 import BG from './_app/cuchillo/layout/Background';
-import Cookies from './windows/Cookies';
+// import Cookies from './windows/Cookies';
 import Header from './layout/Header';
 
 import { ScrollItem__SliderScrollHorizontal } from './scroll/ScrollItem__SliderScrollHorizontal';
@@ -58,7 +58,7 @@ export default class Main {
 
     BG.init(CMS_COLORS); // Control de paletas y color de fondo de pantallas. Automatico si añadimos un data-palette='loquesea' en el div con data-page
     InterfaceCanvas.init(); // Canvas de interface, se usa con Cursor
-    Cookies.init(); // Checkea y saca el aviso de cookies
+    // Cookies.init(); // Checkea y saca el aviso de cookies
 
     LoaderController.add(new PagesLoader()); // Carga/Precarga de paginas HTML
     LoaderController.add(new MediaLoader()); // Carga/Precarga de imgs
